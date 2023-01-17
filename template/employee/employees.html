@@ -1,0 +1,128 @@
+{% extends 'employee/base.html' %}
+
+{% block content %}
+
+<hr>
+<div class="card shadow mb-4">
+  <div class="card-header py-3 d-flex justify-content-between">
+    <h5 class="m-0 font-weight-bold text-primary">Empleados</h5>
+    <button id="btnShowModalEmployee" class="btn btn-outline-primary" data-toggle="modal" data-target="#modalAddEmployee" type="button">AGREGAR</button>
+  </div>
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-bordered" id="employeesTable" width="100%" cellspacing="0">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Cédula</th>
+            <th>Fecha de Nacimiento</th>
+            <th>Email</th>
+            <th>Telefono</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <th>Nombre</th>
+            <th>Cédula</th>
+            <th>Fecha de Nacimiento</th>
+            <th>Email</th>
+            <th>Telefono</th>
+            <th>Acciones</th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalAddEmployee" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Agregar Empleado</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="needs-validation" id="frmAddEmployee" action="" method="post">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="name">Nombre Completo</label>
+            <input type="text" class="form-control" id="name" name="full_name" placeholder="Nombre Completo" minlength="3" required>
+          </div>
+          <div class="form-group">
+            <label for="dni">Cédula</label>
+            <input type="text" class="form-control" id="dni" name="dni" placeholder="Cédula" maxlength="10" required onkeypress="if ( isNaN( String.fromCharCode(event.keyCode) )) return false;">
+          </div>
+          <div class="form-group">
+            <label for="birthdate">Fecha de Nacimiento</label>
+            <input type="date" class="form-control" id="birthdate" max="now" name="birth_date" placeholder="Fecha de Nacimiento" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Numero de Telefeno</label>
+            <input type="text" class="form-control" id="phone" name="phone_number" placeholder="Telefono" minlength="10" maxlength="10" required onkeypress="if ( isNaN( String.fromCharCode(event.keyCode) )) return false;">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" id="btnAddEmployee">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="modalEditEmployee" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Editar Empleado</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="frmEditEmployee" action="" method="post">
+          {% csrf_token %}
+          <input type="hidden" id="id" name="id">
+          <div class="form-group">
+            <label for="EditName">Nombre Completo</label>
+            <input type="text" class="form-control" id="EditName" name="full_name" placeholder="Nombre Completo" minlength="3" required>
+          </div>
+          <div class="form-group">
+            <label for="EditDni">Cédula</label>
+            <input type="text" class="form-control" id="EditDni" name="dni" placeholder="Cédula" maxlength="10" required onkeypress="if ( isNaN( String.fromCharCode(event.keyCode) )) return false;">
+          </div>
+          <div class="form-group">
+            <label for="EditBirthDate">Fecha de Nacimiento</label>
+            <input type="date" class="form-control" id="EditBirthDate" max="now" name="birth_date" placeholder="Fecha de Nacimiento" required>
+          </div>
+          <div class="form-group">
+            <label for="EditEmail">Email</label>
+            <input type="email" class="form-control" id="EditEmail" name="email" placeholder="Email" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Numero de Telefeno</label>
+            <input type="text" class="form-control" id="EditPhone" name="phone_number" placeholder="Telefono" maxlength="10" required onkeypress="if ( isNaN( String.fromCharCode(event.keyCode) )) return false;">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" id="btnEditEmployee">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+modalEditEmployee

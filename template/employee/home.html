@@ -1,0 +1,17 @@
+{% extends 'employee/base.html' %}
+
+{% block content %}
+
+{% if request.user.is_authenticated %}
+<hr>
+<p>
+    <strong>{{ user.username | upper }}</strong>, bienvenido al portal de empleados de tecnoglass. 
+    En nuestra barra de navegación haz click en "Empleados" donde podrás crear, editar y consultar.
+</p>
+{% else %}
+<div>
+    <p>Bienvenido a nuestro portal para gestionar empleados, actualmente contamos con {{count_empl}} trabajadores.
+    </p>
+</div>
+{% endif %}
+{% endblock %}

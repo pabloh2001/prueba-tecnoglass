@@ -1,0 +1,34 @@
+{% extends 'employee/base.html' %}
+
+{% block content %}
+
+<br>
+
+
+<div class="row d-flex justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+        <div class="card bg-white">
+            <div class="card-body p-5">
+                <form class="mb-3 mt-md-4" action="" method="post">
+                    {% csrf_token %}
+                    <h2 class="fw-bold mb-2 text-uppercase ">Login</h2>
+                    <p class=" mb-5">Por favor, ingrese sus credenciales.</p>
+                    <div class="mb-3">
+                        <label for="username" class="form-label ">Nombre de Usuario</label>
+                        <input type="text" class="form-control" name="username" id="username" placeholder="example">
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label ">Password</label>
+                        <input type="password" class="form-control" name="password" id="password" placeholder="*******">
+                    </div>
+                    <br>
+                    <div class="d-grid">
+                        <button class="btn btn-outline-dark" type="submit">Login</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

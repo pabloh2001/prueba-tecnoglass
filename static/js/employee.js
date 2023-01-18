@@ -54,27 +54,30 @@ $(document).ready(function() {
     } );
 
     $("#btnAddEmployee").on('click', function(e) {
-        //e.preventDefault();
-        var formData = new FormData($("#frmAddEmployee").get(0));
-        $.ajax({
-            type: 'POST',
-            url: 'create/',
-            data: formData,
-            cache: false,
-            contentType: false,
-            processData: false,
-            dataType: 'json',
-            success: function(data) {
-                if (data.code == 1) {
-                    employeesTable.ajax.reload();
-                    $("#frmAddEmployee").get(0).reset();
-                    $("#modalAddEmployee").modal('hide');
-                    alertify.success(data.msg);
-                } else {
-                    alertify.error(data.msg);
+        if (!validateFieldsAdd()) {
+            e.preventDefault();
+        }else {
+            let formData = new FormData($("#frmAddEmployee").get(0));
+            $.ajax({
+                type: 'POST',
+                url: 'create/',
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                dataType: 'json',
+                success: function(data) {
+                    if (data.code == 1) {
+                        employeesTable.ajax.reload();
+                        $("#frmAddEmployee").get(0).reset();
+                        $("#modalAddEmployee").modal('hide');
+                        alertify.success(data.msg);
+                    } else {
+                        alertify.error(data.msg);
+                    }
                 }
-            }
-        });
+            });
+        }
     });
 
     $('#employeesTable tbody').on("click", ".btnEditEmployee", function () {
@@ -99,30 +102,76 @@ $(document).ready(function() {
         
     });
 
-    $("#btnEditEmployee").on('click', function() {
-        let formData = new FormData($("#frmEditEmployee").get(0));
-        
-        let id = $("#frmEditEmployee input[id=id]").val();
-        $.ajax({
-            type: 'POST',
-            url: `get/${id}/edit/`,
-            data: formData,
-            cache: false,
-            contentType: false,
-            processData: false,
-            dataType: 'json',
-            success: function(data) {
-                if (data.code == 1) {
-                    employeesTable.ajax.reload();
-                    $("#frmEditEmployee").get(0).reset();
-                    $("#modalEditEmployee").modal('hide');
-                    alertify.success(data.msg);
-                } else {
-                    alertify.error(data.msg);
+    $("#btnEditEmployee").on('click', function(e) {
+        if (!validateFieldsEdit()) {
+            e.preventDefault();
+        } else {
+            let formData = new FormData($("#frmEditEmployee").get(0));
+            let id = $("#frmEditEmployee input[id=id]").val();
+            $.ajax({
+                type: 'POST',
+                url: `get/${id}/edit/`,
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                dataType: 'json',
+                success: function(data) {
+                    if (data.code == 1) {
+                        employeesTable.ajax.reload();
+                        $("#frmEditEmployee").get(0).reset();
+                        $("#modalEditEmployee").modal('hide');
+                        alertify.success(data.msg);
+                    } else {
+                        alertify.error(data.msg);
+                    }
+                }
+            });
+        }
+    });
+
+    function validateFieldsAdd(){
+        if (!$("#name").val() || !$("#dni").val() || !$("#birthdate").val() || !$("#phone").val() || !$("#email").val()) {
+            alertify.error("asegurese de llenar todos los campos")
+            return false;
+        } else {
+            if ($("#email").val()) {
+                if (!validateEmail($("#frmAddEmployee input[type=email]").val())) {
+                    alertify.error("email invalido")
+                    return false;
                 }
             }
-        });
-    });
+        }
+        return true;
+    }
+
+    function validateFieldsEdit(){
+        if (!$("#EditName").val() || !$("#EditDni").val() || !$("#EditBirthDate").val() || !$("#EditEmail").val() || !$("#EditPhone").val()) {
+            alertify.error("asegurese de llenar todos los campos")
+            return false;
+        } else {
+            if ($("#EditEmail").val()) {
+                if (!validateEmail($("#frmEditEmployee input[type=email]").val())) {
+                    alertify.error("email invalido")
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    function validateEmail(email){
+	
+        // Define our regular expression.
+        var validEmail =  /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
+    
+        // Using test we can check if the text match the pattern
+        if( validEmail.test(email) ){
+            return true;
+        }else{
+            return false;
+        }
+    } 
 });
 
 window.addEventListener('DOMContentLoaded', (e) => {
